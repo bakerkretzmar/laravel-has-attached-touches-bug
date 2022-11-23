@@ -2,20 +2,20 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Group;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function test_the_application_returns_a_successful_response()
-    {
-        $response = $this->get('/');
+    use RefreshDatabase;
 
-        $response->assertStatus(200);
+    public function test_groups_can_have_users_attached()
+    {
+        $user = User::factory()->create();
+        $group = Group::factory()->hasAttached($user)->create();
+
+        $this->assertCount(1, $group->users);
     }
 }
